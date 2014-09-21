@@ -1,80 +1,95 @@
+//algorithm from On O(1) Time Algorithms for Combinatorial Generation, http://comjnl.oxfordjournals.org/content/44/4/292.full.pdf
+
 #include <iostream>
 #include <vector>
 
-
 using namespace std;
 
-void out(int n, vector<signed int> q){
+void out(int n, vector<signed int> c){
     for (int i=1; i<=n; i++)
-        cout << q[i] << ' ';
+        cout << c[i] << ' ';
     cout << endl;
 }
 
 
 int main(int argc, char* argv[]){
-    cout << "hello world" << endl;
-
-    int i=0, n=0, r=0;
+    int t=0,  r=0, j=0, M0 = 0, Mj = 0, S = 0, n=0;
 
     cout << "input n, r" << endl;
     cin >> n >> r;
 
-    vector<signed int> d(n+2);        //take +/- 1;
-    vector<signed int> a(n+1),q(n+1),solve(n+1),up(n+1),down(n+1),pos(n+1); //positive going array
+    vector<int> c((unsigned long)n+1),e((unsigned long)n+2), Last((unsigned long)n+2); //positive going array
 
-    for (i=1; i <= n ; i++){
-        a[i] = i;
-        q[i] = i;
-        up[i] = i;
-        down[i] = i;
-        solve[i] = i;
-        pos[i] = i;
-        d[i] = 1;
-    }
-    d[n+1] = i;
-    i = n;
+    M0   = r - n;
+    t    = n + 1;
+    c[0] = 0;
 
-    do{
-        out(n, q);
-        if(d[i+1] < 0){
-            q[pos[a[i]]] = a[i] + d[i];
-            pos[a[i] + d[i]] = pos[a[i]];
-        } else if (d[i] > 0){
-            q[pos[a[i]]] = a[solve[i]] + d[i];
-            pos[a[solve[i]]+d[i]] = pos[a[i]];
+    j = 0;
+    do {
+        j = j+1;
+        c[j] = j;
+        e[j] = j - 1;
+        if ((j % 2) == 1) {
+            Last[j] = M0 + j;
         } else {
-            q[pos[a[solve[i]]]] = a[i] + d[i];
-            pos[a[i]+d[i]] = pos[a[solve[i]]];
+            Last[j] = j + 1;
         }
+    } while(j!= n);
 
-        a[i] = a[i] + d[i];
+    int i = 0;
 
-        if (d[i+1] > 0){
-            a[solve[i]] = a[solve[i]] + d[i];
-        }
+    out(n,c);
 
-        up[i] = i;
+    if(n < r) {
+        do {
+            i++;
+            S= c[j];
+            Mj = M0 + j;
+            e[n+1] = n;
 
-        if (((d[i] > 0) && (a[i] == (r-n+i))) || ((d[i] < 0) && (a[i] == (a[i-1] + 1)))){
-            up[i] = up[i-1];
-            up[i-1] = i-1;
-            down[up[i]] = i;
-
-            if (d[i] < 0){
-                solve[up[i]] = i;
-            }
-
-            d[i] = -d[i];
-
-            if ((d[i] < 0) || (i == n)){
-                i = up[i];
+            if ((j%2) == 1){
+                if(c[j] == Mj){
+                    c[j] = c[j-1] + 1;
+                    Last[j+1] = c[j]+1;
+                } else {
+                    c[j] = c[j] + 1;
+                }
             } else {
-                i = down[i];
+                if(c[j] == (c[j-1] + 1)){
+                    c[j] = Mj;
+                } else {
+                    Last[j+1] = c[j];
+                    c[j] = c[j] - 1;
+                }
             }
-        }
 
-    }while(i != 0);
-    out(n, q);
+            if (c[j] == Last[j]) {
+                Last[j] = S;
+                e[j+1] = e[j];
+                e[j] = j-1;
+            }
+
+            if ((j < n) && (c[j] == Mj)){
+                t = j;
+                j = e[t+1];
+                e[t+1] = t;
+            } else {
+                if (t == j){
+                    t++;
+                }
+                if (t < e[n+1]){
+                    j = t;
+                } else{
+                    j = e[n+1];
+                }
+            }
+
+            out(n,c);
+        } while (j != 0);
+    }
+    i++;
+    cout << i << endl;
+
 
     return 0;
 }

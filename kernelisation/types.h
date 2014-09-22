@@ -10,11 +10,17 @@ enum class VertexColor { BLACK, WHITE, RED };
 struct VertexProperty
 {
 	bool hidden = false;
-	VertexColor color = VertexColor::BLACK;
+    bool isRed = false;
+    int redNeighbourCount = 0;
 };
 struct EdgeProperty
 {
 	bool hidden = false;
+};
+
+struct GraphProperty{
+    int numRed = 0;
+    int numBlack = 0;
 };
 
 //Define filter which is used on both verticies and edges. Filters hidden verticies/edges.
@@ -40,7 +46,9 @@ private:
 template <typename Graph>
 struct HiddenFilteredGraph : public filtered_graph<Graph, HiddenFilter<Graph>, HiddenFilter<Graph>> {
 	HiddenFilteredGraph(Graph& g) :
-		filtered_graph<Graph, HiddenFilter<Graph>, HiddenFilter<Graph>>(g, HiddenFilter<Graph>(g), HiddenFilter<Graph>(g)) {}
+		filtered_graph<Graph, HiddenFilter<Graph>, HiddenFilter<Graph>>(g, HiddenFilter<Graph>(g), HiddenFilter<Graph>(g)) {
+        g[graph_bundle].numBlack = num_verticies;
+    }
 };
 
 //Define the final graph type
@@ -50,9 +58,8 @@ typedef HiddenFilteredGraph<BaseGraph> Graph;
 
 //Graph modifiers are used to undo the actions of the kernelization algorithm
 enum class GraphModifierType {
-	COLOR_VERTEX_BLACK,
-	COLOR_VERTEX_WHITE,
-	COLOR_VERTEX_RED,
+	COLOR_RED,
+	UN_COLOR_RED,
 	ADD_VERTEX,
 	ADD_EDGE
 };

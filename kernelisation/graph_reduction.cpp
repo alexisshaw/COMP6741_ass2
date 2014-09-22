@@ -6,37 +6,6 @@ using namespace std;
 using namespace boost;
 
 namespace {
-    void makeRed(Graph::vertex_descriptor v, Graph& g) {
-        if(g[v].redNeighbourCount == 0){
-            g[graph_bundle].numBlack--;
-        }
-        g[v].redNeighbourCount++;
-
-        g[v].isRed = true;
-        g[graph_bundle].numRed ++;
-
-        for (auto v1 : boost::make_iterator_range(adjacent_vertices(v, g))){
-            if(g[v1].redNeighbourCount == 0){
-                g[graph_bundle].numBlack--;
-            }
-            g[v1].redNeighbourCount++;
-        }
-    }
-
-    void makeUnRed(Graph::vertex_descriptor v, Graph& g , int& numUndominated) {
-        g[v].redNeighbourCount--;
-
-        g.isRed = false;
-        g[graph_bundle].numRed--;
-
-        for (auto v1 : boost::make_iterator_range(adjacent_vertices(v, g))){
-            g[v1].redNeighbourCount--;
-            if(g[v1].redNeighbourCount == 0){
-                g[graph_bundle].numBlack++;
-            }
-        }
-    }
-
     template <typename T>
 	void delete_edge_between(Graph& g, Graph::vertex_descriptor v1, Graph::vertex_descriptor v2, T& modifier_stack) {
 		auto ep = edge(v1, v2, g);

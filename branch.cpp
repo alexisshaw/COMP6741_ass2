@@ -32,7 +32,7 @@ bool branch(Graph g, int k, bool doKern, vector<stack<GraphModifierType, vector<
         if (g[graph_bundle].numBlack == 0 ) return k >=  g[graph_bundle].numRed;
         if (k <= g[graph_bundle].numRed) return false;
         while(oldSize < kerneliseState.size()){
-            kernelize(g, k, kerneliseState);
+            GraphReduction::kernelize(g, k, kerneliseState);
 
             if (g[graph_bundle].numBlack == 0 ) return k >=  g[graph_bundle].numRed;
             if (k <= g[graph_bundle].numRed) return false;
@@ -62,7 +62,7 @@ bool branch(Graph g, int k, bool doKern, vector<stack<GraphModifierType, vector<
     }
 
     if(doKern)
-        unkernelize(g,k, kerneliseState);
+        GraphReduction::unkernelize(g,k, kerneliseState);
     stacks.push_back(move(kerneliseState));
 
     return false;

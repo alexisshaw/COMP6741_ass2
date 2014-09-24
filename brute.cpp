@@ -3,6 +3,7 @@
 #include "kernelisation/types.h"
 #include "kernelisation/graph_reduction.h"
 #include "combinations/combination.h"
+#include <iostream>
 
 bool brute(Graph g, int k){
     vector<Graph::vertex_descriptor> non_red_descriptors;
@@ -31,6 +32,10 @@ bool brute(Graph g, int k){
         }
 
         if(g[graph_bundle].numBlack == 0){
+            for (auto v : comb){
+                std::cout << v << " ";
+            }
+            std::cout << endl;
             return true;
         }
     }

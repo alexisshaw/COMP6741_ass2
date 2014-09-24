@@ -26,7 +26,8 @@ int main(int argc ,char* argv[])
             ("help,h", "Print help messages")
             ("brute,b","brute force")
             ("branch,s","Branch without kernelisation")
-            ("kbranch,k","Branch with kernelisation")
+            ("kbranch,r","Branch with kernelisation")
+            ("max-k,k", po::value<int>()->implicit_value(1),"Max-k")
             ("output-file,o", po::value<vector<string>>(), "Specifies output file.")
             ("input-file,i", po::value<vector<string>>(),"Specifies input file");
     po::positional_options_description p;
@@ -73,6 +74,8 @@ int main(int argc ,char* argv[])
         }
     }
 
+    int k = vm["max-k"].as<int>();
+
 
 
     //ofstream myfile;
@@ -85,9 +88,12 @@ int main(int argc ,char* argv[])
     vector<GraphModifier> myvect(1000);
     stack<GraphModifier, vector<GraphModifier>> kernState(myvect);
 
-    GraphReduction::kernelize(g, 1, kernState);
+    GraphReduction::kernelize(g, k, kernState);
 
-    *pCout << brute(g, 1) << endl;
+    *pCout << g[graph_bundle].numBlack << " " << g[graph_bundle].numRed<<endl;
+    *pCout << brute(g, k) << endl;
+    *pCout << g[graph_bundle].numBlack << " " << g[graph_bundle].numRed<<endl;
+
 
     outputGraph(*pCout, g);
 

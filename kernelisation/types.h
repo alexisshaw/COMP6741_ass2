@@ -48,6 +48,7 @@ struct HiddenFilteredGraph : public filtered_graph<Graph, HiddenFilter<Graph>, H
     HiddenFilteredGraph(Graph& g) :
             filtered_graph<Graph, HiddenFilter<Graph>, HiddenFilter<Graph>>(g, HiddenFilter<Graph>(g), HiddenFilter<Graph>(g)) {
         g[graph_bundle].numBlack = num_vertices(g); //Assuming input graph has every vertex black
+        g[graph_bundle].numRed = 0;
     }
 };
 
@@ -99,6 +100,10 @@ inline void makeUnRed(Graph::vertex_descriptor v, Graph& g) {
 
     g[v].isRed = false;
     g[graph_bundle].numRed--;
+
+    if (g[v].redNeighbourCount == 0){
+        g[graph_bundle].numBlack++;
+    }
 
     for (auto v1 : boost::make_iterator_range(adjacent_vertices(v, g))){
         g[v1].redNeighbourCount--;

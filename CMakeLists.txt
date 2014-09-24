@@ -10,7 +10,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 set(COMB_SOURCE_FILES combinations/combination.cpp)
 add_executable(COMP6741_ass2_combTest ${COMB_SOURCE_FILES})
 
-set(GEN_SOURCE_FILES graph_gen.cpp)
+set(GEN_SOURCE_FILES gen_b.cpp)
 add_executable(COM6741_asst2_gen ${GEN_SOURCE_FILES})
 target_link_libraries(COM6741_asst2_gen boost_graph boost_regex boost_program_options)
 

@@ -4,8 +4,7 @@
 #include <utility>
 #include <vector>
 
-#ifndef COMBINATION_H
-#define COMBAINTION_H
+#pragma once
 
 template <typename T>
 class combination {
@@ -230,4 +229,3 @@ T combination<T>::combinationIterator::combinationResult::lastOut()
 template <typename T>
 T combination<T>::combinationIterator::combinationResult::lastIn()
 { return parent->lastIn; }
-#endif

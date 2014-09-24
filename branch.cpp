@@ -1,28 +1,26 @@
-#include <boost/graph>
-#include <boost/range>
+#include <boost/range/iterator_range.hpp>
 #include <bits/stl_bvector.h>
 #include <stack>
 #include "kernelisation/types.h"
 #include "kernelisation/graph_reduction.h"
 #include "combinations/combination.h"
 
+using namespace GraphReduction;
 
-
-bool branch(Graph g, int k, bool doKern, vector<stack<GraphModifierType, vector<GraphModifierType>>>& stacks){
+bool branch(Graph g, int k, bool doKern, vector<stack<GraphModifier, vector<GraphModifier>>>& stacks){
     vector<Graph::vertex_descriptor> black_descriptors;
 
     if (g[graph_bundle].numBlack == 0 ) return k >=  g[graph_bundle].numRed;
     if (k <= g[graph_bundle].numRed) return false;
 
-    for (auto v : boost::make_iterator_range(vertices(g))){
+    for (Graph::vertex_descriptor v : boost::make_iterator_range(vertices(g))){
         if(!g[v].isRed){
-            non_red_descriptors.push_back(v);
+            black_descriptors.push_back(v);
         }
     }
 
-    stack<GraphModifierType, vector<GraphModifierType>> kerneliseState;
+    stack<GraphModifier, vector<GraphModifier>> kerneliseState;
     std::swap(kerneliseState, stacks.back());
-    stacks.pop;
     stacks.pop_back();
 
     if (doKern) {
@@ -62,8 +60,8 @@ bool branch(Graph g, int k, bool doKern, vector<stack<GraphModifierType, vector<
     }
 
     if(doKern)
-        GraphReduction::unkernelize(g,k, kerneliseState);
-    stacks.push_back(move(kerneliseState));
+        GraphReduction::unkernelize(g, kerneliseState);
+    stacks.push_back(std::move(kerneliseState));
 
     return false;
 }

@@ -4,29 +4,30 @@
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/adjacency_matrix.hpp>
 
+
+#include <vector>
 #include <random>
+#include <climits>
 
 using namespace boost;
+using namespace std;
 
 struct EdgeProperty
 {
-    char minDist = 255;
-    char minLoopLen = 255;
+    int minDist = (INT_MAX - 2);
+
+    bool mark;
 };
 
 struct Gen {
     random_device rd;
-    Gen()
-            : g(static_cast<uint32_t>(time(0)))
-    {
-    }
     size_t operator()(size_t n)
     {
         std::uniform_int_distribution<size_t> d(0, n ? n-1 : 0);
-        return d(g);
+        return d(rd);
     }
 };
 
 //Define the final graph type
-typedef adjacency_matrix<undirectedS, no_property, EdgeProperty> dataGraph;
+typedef adjacency_matrix<undirectedS, no_property, EdgeProperty> adjGraph;
 typedef adjacency_list<vecS, vecS, undirectedS> Graph;

@@ -14,9 +14,7 @@ using namespace std;
 
 struct EdgeProperty
 {
-    int minDist = (INT_MAX - 2);
-
-    bool mark;
+    int minDist = (INT_MAX - 2)/2;
 };
 
 struct Gen {

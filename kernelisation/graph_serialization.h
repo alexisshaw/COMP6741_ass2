@@ -5,28 +5,25 @@
 #include <iostream>
 #include <fstream>
 
-using namespace std;
-using namespace boost;
-
-
-BaseGraph buildGraph(int nverticies, vector<pair<int, int>> edges) {
-    BaseGraph g(nverticies);
+reductionTypes::BaseGraph buildGraph(int nverticies, std::vector<std::pair<int, int>> edges) {
+    reductionTypes::BaseGraph g(nverticies);
     for (auto e : edges) {
-        add_edge(e.first, e.second, g);
+        boost::add_edge(e.first, e.second, g);
     }
     return g;
 }
-template <typename T>
-void outputGraph(ostream& fout, const T& g) {
+
+template<typename T>
+void outputGraph(std::ostream &fout, const T &g) {
     //Print graph to stdout, unlabelled
-    write_graphviz(fout, g);
+    boost::write_graphviz(fout, g);
 
 }
 
-BaseGraph readGraph(istream& fin) {
-    BaseGraph g(0);
-    dynamic_properties dp(ignore_other_properties);
-    read_graphviz(fin, g, dp);
+reductionTypes::BaseGraph readGraph(std::istream &fin) {
+    reductionTypes::BaseGraph g(0);
+    boost::dynamic_properties dp(ignore_other_properties);
+    boost::read_graphviz(fin, g, dp);
     return g;
 
 }

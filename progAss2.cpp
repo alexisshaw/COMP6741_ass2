@@ -11,6 +11,7 @@
 #include "kernelisation/graph_reduction.h"
 
 #include "brute.h"
+#include "branch.h"
 
 using namespace boost;
 using namespace std;
@@ -91,7 +92,18 @@ int main(int argc ,char* argv[])
     GraphReduction::kernelize(g, k, kernState);
 
     *pCout << g[graph_bundle].numBlack << " " << g[graph_bundle].numRed<<endl;
-    *pCout << brute(g, k) << endl;
+    if(vm.count("brute")){
+        *pCout << brute(g, k) << endl;
+    }
+    if(vm.count("branch")){
+        vector<stack<GraphModifier, vector<GraphModifier>>> stacks(k);
+        *pCout << branch(g, k, false, stacks) << endl;
+    }
+    if(vm.count("kbranch")){
+        vector<stack<GraphModifier, vector<GraphModifier>>> stacks(k);
+        *pCout << branch(g, k, true, stacks) << endl;
+    }
+
     *pCout << g[graph_bundle].numBlack << " " << g[graph_bundle].numRed<<endl;
 
 

@@ -142,7 +142,11 @@ combination<T>::combination(TVect& base, size_t choose):baseContainer(&base), n(
 template <typename T>
 typename combination<T>::combinationIterator combination<T>::begin()
 {
-    return combinationIterator(this, false);
+    if (r >= n) {
+        return combinationIterator(this, false);
+    } else {
+        return end();
+    }
 }
 
 template <typename T>

@@ -3,16 +3,16 @@
 #include <algorithm>
 
 
-inline vector<int> getX(const int n, const int k){
+inline vector<unsigned long> getX(const int n, const int k){
     //get partitions
-    vector<int> vertex_descriptors(n-k);
+    vector<unsigned long> vertex_descriptors(n-k);
     iota(vertex_descriptors.begin(), vertex_descriptors.end(), 0);
 
     random_device rd;
 
     shuffle(vertex_descriptors.begin(), vertex_descriptors.end(), rd);
 
-    vector<int> x(k);
+    vector<unsigned long> x(k);
 
     sort(vertex_descriptors.begin(), vertex_descriptors.begin() + k-1);
 
@@ -23,8 +23,8 @@ inline vector<int> getX(const int n, const int k){
     return x;
 }
 
-inline vector<int> getY(vector<int> X){
-    vector<int> Y(X.size());
+inline vector<unsigned long> getY(vector<unsigned long> X){
+    vector<unsigned long> Y(X.size());
 
     for(int i=0; i < X.size(); i++){
         Y[i] = X[i] + 1;
@@ -32,8 +32,8 @@ inline vector<int> getY(vector<int> X){
     return Y;
 }
 
-inline vector<vector<int>> getV(vector<int> X, int n){
-    vector<vector<int>> V (X.size());
+inline vector<vector<unsigned long>> getV(vector<unsigned long> X, int n){
+    vector<vector<unsigned long>> V (X.size());
     for(int i=0; i < X.size(); i++){
         int limit = 0;
         if ((i+1) < X.size()){

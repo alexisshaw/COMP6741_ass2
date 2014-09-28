@@ -18,7 +18,7 @@ bool brute(Graph g, int k){
     if (k <= g[graph_bundle].numRed) return false;
 
 
-    for(auto comb: combination<Graph::vertex_descriptor>(non_red_descriptors,k)){
+    for(auto comb: combination<Graph::vertex_descriptor>(non_red_descriptors,k - g[graph_bundle].numRed)){
         if (comb.lastIn() == comb.lastOut()){
             for (auto v : comb){
                 makeRed(v, g);

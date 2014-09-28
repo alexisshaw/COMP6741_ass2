@@ -8,6 +8,7 @@ using namespace std;
 namespace {
     using namespace std;
     using namespace boost;
+    using namespace reductionTypes;
 
     template <typename T>
     void delete_edge_between(Graph& g, Graph::vertex_descriptor v1, Graph::vertex_descriptor v2, T& modifier_stack) {
@@ -58,6 +59,7 @@ namespace {
 namespace GraphReduction {
     using namespace std;
     using namespace boost;
+    using namespace reductionTypes;
 
     template<typename T>
     void kernelize(Graph& g, int k, T& modifier_stack) {

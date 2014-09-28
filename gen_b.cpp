@@ -22,9 +22,9 @@ int main(int argc, char* argv[]) {
     const int k = 10;
     const int minG = 5;
 
-    vector<int> X = getX(n, k);
-    vector<int> Y = getY(X);
-    vector<vector<int>> V = getV(X, n);
+    vector<unsigned long> X = getX(n, k);
+    vector<unsigned long> Y = getY(X);
+    vector<vector<unsigned long>> V = getV(X, n);
 
     Graph g(n);
     adjGraph g_adj(n);
@@ -40,8 +40,15 @@ int main(int argc, char* argv[]) {
 
     //Setup distance lookup graph (complete graph!)
     for (int i = 0; i < n; ++i) {
-        for (int j = (i + 1); j < n; ++j) {
+        for (int j = 0; j < i; ++j) {
             add_edge(i, j, g_adj);
+
+            pair<adjGraph::edge_descriptor, bool> e = edge(i, j, g_adj);
+            if (e.second) {
+                g_adj[e.first].minDist = (INT_MAX - 2) / 2;
+            } else {
+                abort();
+            }
         }
     }
 
@@ -53,6 +60,25 @@ int main(int argc, char* argv[]) {
             pair<adjGraph::edge_descriptor, bool> e = edge(v, X[i], g_adj);
             if (e.second) {
                 g_adj[e.first].minDist = 1;
+            } else {
+                abort();
+            }
+        }
+        //distance between Y[i] and X[i]
+        {
+            pair<adjGraph::edge_descriptor, bool> e = edge(Y[i], X[i], g_adj);
+            if (e.second) {
+                g_adj[e.first].minDist = 1;
+            } else {
+                abort();
+            }
+        }
+
+        //The shortest Distance to an Y[i] within it's partition is 2
+        for (int v : V[i]) {
+            pair<adjGraph::edge_descriptor, bool> e = edge(v, Y[i], g_adj);
+            if (e.second) {
+                g_adj[e.first].minDist = 2;
             } else {
                 abort();
             }
@@ -75,12 +101,17 @@ int main(int argc, char* argv[]) {
 
     //setup available edges graph, Initially you can connect to anyone outside your partition.
     for (int i = 0; i < k; ++i) {
-        for (int j = (i + 1); j < k; ++j) {
+        for (int j = 0; j < i; ++j) {
             assert (i != j);
 
             for (int v: V[j]) {
                 add_edge(X[i], v, available);
                 assert(!edge(X[i], v, g).second);
+            }
+
+            for (int v: V[i]) {
+                add_edge(X[j], v, available);
+                assert(!edge(X[j], v, g).second);
             }
 
             add_edge(X[i], X[j], available);
@@ -111,8 +142,8 @@ int main(int argc, char* argv[]) {
 
     while(num_edges(available) > 0){
         auto ea = random_edge(available, rd);
-        int v1 = source(ea, available);
-        int v2 = target(ea, available);
+        auto v1 = source(ea, available);
+        auto v2 = target(ea, available);
 
         cout << v1 << ' ' << v2 << ' ';
 
@@ -171,8 +202,8 @@ int main(int argc, char* argv[]) {
 
         //remove edges that would make the graph girth minG - 1 from available.
         for (auto e : iterator_range<Graph::edge_iterator>(edges(available))){
-            int vn1 = source(e, available);
-            int vn2 = target(e, available);
+            auto vn1 = source(e, available);
+            auto vn2 = target(e, available);
 
             auto en = edge(vn1, vn2, g_adj);
 
@@ -186,7 +217,7 @@ int main(int argc, char* argv[]) {
         }
         toRemove.clear();
 
-        cout << " Edges: " << num_edges(g) << "Available Remaining: " << num_edges(available) << endl;
+        cout << " Edges: " << num_edges(g) << " Available Remaining: " << num_edges(available) << endl;
     }
     {
         ofstream outputfile(boost::lexical_cast<std::string>(std::time(nullptr)) + "e.dot");

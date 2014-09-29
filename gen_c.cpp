@@ -46,7 +46,7 @@ int main(int argc, char* argv[]) {
 
 
     avilableList a(X,V);
-    a.updateAvailable();
+    a.updateAvailable(g);
 
     random_device rd;
     while(num_edges(available) > 0){

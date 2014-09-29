@@ -45,11 +45,11 @@ int main(int argc, char* argv[]) {
     }
 
 
-    avilableList a(X,V);
+    availableList a(X,V);
     a.updateAvailable(g);
 
     random_device rd;
-    while(num_edges(available) > 0){
+    while(a.size() > 0){
         uniform_int_distribution<int> dist(0, a.size() - 1);
         Graph::vertex_descriptor v1, v2;
         tie(v1, v2) = a[dist(rd)];
@@ -58,9 +58,9 @@ int main(int argc, char* argv[]) {
 
         add_edge(v1, v2, g);
 
-        a.updateAvailable(v1, v2, g);
+        a.updateAvailable(g);
 
-        cout << " Edges: " << num_edges(g) << " Available Remaining: " << num_edges(available) << endl;
+        cout << " Edges: " << num_edges(g) << " Available Remaining: " << a.size() << endl;
     }
 
 

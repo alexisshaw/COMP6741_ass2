@@ -107,6 +107,6 @@ int main(int argc ,char* argv[])
     *pCout << g[graph_bundle].numBlack << " " << g[graph_bundle].numRed<<endl;
 
 
-    outputGraph(*pCout, g);
+    //outputGraph(*pCout, g);
 
 }

@@ -4,11 +4,14 @@
 #include "kernelisation/graph_reduction.h"
 #include "combinations/combination.h"
 #include <iostream>
+#include <vector>
+
+using namespace std;
 
 bool brute(Graph g, int k){
     vector<Graph::vertex_descriptor> non_red_descriptors;
 
-    for (auto v : boost::make_iterator_range(vertices(g))){
+    for (Graph::vertex_descriptor v : boost::make_iterator_range(vertices(g))){
         if(!g[v].isRed){
             non_red_descriptors.push_back(v);
         }
@@ -27,7 +30,7 @@ bool brute(Graph g, int k){
             auto out = comb.lastOut();
             makeUnRed(out,g);
 
-            auto in = comb.lastOut();
+            auto in = comb.lastIn();
             makeRed(in, g);
         }
 

@@ -90,6 +90,7 @@ namespace reductionTypes{
     };
 
     inline void makeRed(Graph::vertex_descriptor v, Graph &g) {
+        //if (g[v].isRed) return;
         if (g[v].redNeighbourCount == 0) {
             g[graph_bundle].numBlack--;
         }
@@ -107,6 +108,7 @@ namespace reductionTypes{
     }
 
     inline void makeUnRed(Graph::vertex_descriptor v, Graph &g) {
+        //if(!g[v].isRed) return;
         g[v].redNeighbourCount--;
 
         g[v].isRed = false;

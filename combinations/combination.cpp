@@ -10,7 +10,7 @@ int main(int argc, char* argv[]){
     int i = 0;
     vector<char> c =  {'a','b','c','d','e','f'};
 
-    for (auto comb : combination<char>(c, 4)){
+    for (auto comb : combination<char>(c, 3)){
         for(auto d : comb) {
             cout << d << ' ';
         }

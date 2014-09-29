@@ -31,6 +31,7 @@ bool branch(Graph g, int k, bool doKern, vector<stack<GraphModifier, vector<Grap
         if (k <= g[graph_bundle].numRed) return false;
 
         while(oldSize < kerneliseState.size()){
+            oldSize = kerneliseState.size();
             GraphReduction::kernelize(g, k, kerneliseState);
 
             if (g[graph_bundle].numBlack == 0 ) return k >=  g[graph_bundle].numRed;

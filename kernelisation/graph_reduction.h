@@ -11,7 +11,7 @@ namespace {
     using namespace reductionTypes;
 
     template <typename T>
-    void delete_edge_between(Graph& g, Graph::vertex_descriptor v1, Graph::vertex_descriptor v2, T& modifier_stack) {
+    inline void delete_edge_between(Graph& g, Graph::vertex_descriptor v1, Graph::vertex_descriptor v2, T& modifier_stack) {
         auto ep = edge(v1, v2, g);
         assert(ep.second == true);
         modifier_stack.push(GraphModifier(GraphModifierType::ADD_EDGE, ep.first));
@@ -19,13 +19,13 @@ namespace {
     }
 
     template <typename T>
-    void delete_vertex(Graph& g, Graph::vertex_descriptor v, T& modifier_stack) {
+    inline void delete_vertex(Graph& g, Graph::vertex_descriptor v, T& modifier_stack) {
         modifier_stack.push(GraphModifier(GraphModifierType::ADD_VERTEX, v));
         g[v].hidden = true;
     }
 
     template<typename T>
-    void kernelize_vertex(Graph &g, Graph::vertex_descriptor v1, T& modifier_stack, int k) {
+    inline void kernelize_vertex(Graph &g, Graph::vertex_descriptor v1, T& modifier_stack, int k) {
         VertexProperty v1p = g[v1];
         if (v1p.isRed)
             return;
@@ -62,7 +62,7 @@ namespace GraphReduction {
     using namespace reductionTypes;
 
     template<typename T>
-    void kernelize(Graph& g, int k, T& modifier_stack) {
+    inline void kernelize(Graph& g, int k, T& modifier_stack) {
         //Iterate though all verticies v1 and kerenlize them
         for (auto v : boost::make_iterator_range(vertices(g))) {
             kernelize_vertex(g, v, modifier_stack, k);
@@ -70,7 +70,7 @@ namespace GraphReduction {
     }
 
     template<typename T>
-    void unkernelize(Graph& g, T& modifier_stack) {
+    inline void unkernelize(Graph& g, T& modifier_stack) {
         //Pop off the top m modifiers and apply their action
         while (!modifier_stack.empty()) {
             GraphModifier m = modifier_stack.top();

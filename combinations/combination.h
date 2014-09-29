@@ -142,7 +142,7 @@ combination<T>::combination(TVect& base, size_t choose):baseContainer(&base), n(
 template <typename T>
 typename combination<T>::combinationIterator combination<T>::begin()
 {
-    if (r >= n) {
+    if (r >= n && n != 0) {
         return combinationIterator(this, false);
     } else {
         return end();
@@ -159,7 +159,7 @@ template <typename T>
 combination<T>::combinationIterator::combinationIterator(combination<T> * p, bool isEnd): parent(p)
 {
     end = isEnd;
-    if (isEnd)
+    if (isEnd || p->n == 0)
     {
         n = p->n;
         r = p->r;
